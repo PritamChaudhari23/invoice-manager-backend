@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res.send("Backend live !!!");
 });
 
-// app.use("/api/v1/invoice", invoiceRoutes);
+app.use("/api/v1/invoice", invoiceRoutes);
 app.use("/api/v1/user", userRoutes);
 
 mongoConnect(() => {
