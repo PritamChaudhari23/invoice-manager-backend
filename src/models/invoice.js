@@ -1,3 +1,6 @@
+// Original Invoice model using class-based approach with native MongoDB
+// For Mongoose version, see invoice-mongoose.js
+
 const mongodb = require("mongodb");
 const dbHelpers = require("../db/dbHelpers");
 

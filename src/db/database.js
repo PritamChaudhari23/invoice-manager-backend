@@ -1,3 +1,6 @@
+// Original database connection using native MongoDB driver
+// For Mongoose version, see database-mongoose.js
+
 require("dotenv").config();
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;

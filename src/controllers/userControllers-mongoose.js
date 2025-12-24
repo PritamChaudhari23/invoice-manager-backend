@@ -1,18 +1,12 @@
-// Original user controllers using native MongoDB driver
-// For Mongoose version, see userControllers-mongoose.js
-
 require("dotenv").config();
-const getDb = require("../db/database").getDb;
+const User = require("../models/user-mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 // LOGIN
 async function login(req, res) {
   try {
-    const db = getDb();
-    const user = await db
-      .collection("users")
-      .findOne({ username: req.body.username });
+    const user = await User.findOne({ username: req.body.username });
 
     if (!user) {
       return res.json({ message: "User not found" });
@@ -38,19 +32,17 @@ async function login(req, res) {
 // SIGN UP
 async function signup(req, res) {
   try {
-    const db = getDb();
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const user = {
+    const user = await User.create({
       name: req.body.name,
       surname: req.body.surname,
       email: req.body.email,
       username: req.body.username,
       password: hashedPassword,
-    };
+    });
 
-    const result = await db.collection("users").insertOne(user);
-    res.send(result);
+    res.send({ message: "User created successfully" });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Error during signup" });

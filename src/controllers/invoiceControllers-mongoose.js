@@ -1,7 +1,4 @@
-// Original invoice controllers using class-based model
-// For Mongoose version, see invoiceControllers-mongoose.js
-
-const Invoice = require("../models/invoice");
+const Invoice = require("../models/invoice-mongoose");
 
 // CREATE
 async function addInvoice(req, res) {
@@ -14,18 +11,15 @@ async function addInvoice(req, res) {
     isPaid = false,
   } = req.body;
 
-  const invoice = new Invoice(
-    null,
-    clientName,
-    amount,
-    service,
-    paymentMethod,
-    invoiceDate,
-    isPaid
-  );
-
   try {
-    await invoice.create();
+    const invoice = await Invoice.create({
+      clientName,
+      amount,
+      service,
+      paymentMethod,
+      invoiceDate,
+      isPaid,
+    });
     res.status(201).send("Invoice added successfully");
   } catch (error) {
     console.error("Failed to add invoice: ", error);
@@ -36,7 +30,7 @@ async function addInvoice(req, res) {
 // RETRIEVE ALL
 async function getAllInvoices(req, res) {
   try {
-    const invoices = await Invoice.fetchAll();
+    const invoices = await Invoice.find();
     res.status(200).send(invoices);
   } catch (error) {
     console.error("Failed to fetch invoices: ", error);
@@ -68,24 +62,23 @@ async function updateInvoice(req, res) {
     req.body;
 
   try {
-    const existingInvoice = await Invoice.findById(invoiceId);
-    if (!existingInvoice) {
+    const updatedInvoice = await Invoice.findByIdAndUpdate(
+      invoiceId,
+      {
+        clientName,
+        amount,
+        service,
+        paymentMethod,
+        invoiceDate,
+        isPaid,
+      },
+      { new: true }
+    );
+    if (!updatedInvoice) {
       return res
         .status(404)
         .send("The invoice with the given ID was not found.");
     }
-
-    const updatedInvoice = new Invoice(
-      invoiceId,
-      clientName,
-      amount,
-      service,
-      paymentMethod,
-      invoiceDate,
-      isPaid
-    );
-
-    await updatedInvoice.update();
     res.status(200).send("Invoice updated successfully");
   } catch (error) {
     console.error("Failed to update invoice: ", error);
@@ -97,7 +90,10 @@ async function updateInvoice(req, res) {
 async function deleteInvoice(req, res) {
   const invoiceId = req.params.id;
   try {
-    await Invoice.deleteById(invoiceId);
+    const deletedInvoice = await Invoice.findByIdAndDelete(invoiceId);
+    if (!deletedInvoice) {
+      return res.status(404).send("Invoice not found");
+    }
     res.status(200).send("Invoice deleted successfully");
   } catch (error) {
     console.error("Failed to delete invoice: ", error);
