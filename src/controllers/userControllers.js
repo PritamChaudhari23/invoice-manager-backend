@@ -2,7 +2,7 @@
 // For Mongoose version, see userControllers-mongoose.js
 
 require("dotenv").config();
-const getDb = require("../db/database").getDb;
+const getDb = require("../config/database").getDb;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 

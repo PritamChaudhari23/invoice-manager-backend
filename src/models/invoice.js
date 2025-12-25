@@ -2,7 +2,7 @@
 // For Mongoose version, see invoice-mongoose.js
 
 const mongodb = require("mongodb");
-const dbHelpers = require("../db/dbHelpers");
+const dbHelpers = require("../config/dbHelpers");
 
 // TO-DO: Add mongoose schema validation
 
