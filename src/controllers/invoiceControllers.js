@@ -1,7 +1,7 @@
 // Original invoice controllers using class-based model
 // For Mongoose version, see invoiceControllers-mongoose.js
 
-const Invoice = require("../models/invoice");
+const Invoice = require("../models/invoice_class");
 
 // CREATE
 async function addInvoice(req, res) {

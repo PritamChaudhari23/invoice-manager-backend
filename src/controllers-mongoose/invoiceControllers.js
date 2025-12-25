@@ -1,4 +1,4 @@
-const Invoice = require("../models/invoice-mongoose");
+const Invoice = require("../models/invoice");
 
 // CREATE
 async function addInvoice(req, res) {

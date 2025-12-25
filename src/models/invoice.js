@@ -1,52 +1,32 @@
-// Original Invoice model using class-based approach with native MongoDB
-// For Mongoose version, see invoice-mongoose.js
+const mongoose = require("mongoose");
 
-const mongodb = require("mongodb");
-const dbHelpers = require("../config/dbHelpers");
+const invoiceSchema = new mongoose.Schema({
+  clientName: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  service: {
+    type: String,
+    required: true,
+  },
+  paymentMethod: {
+    type: String,
+    required: true,
+  },
+  invoiceDate: {
+    type: Date,
+    required: true,
+  },
+  isPaid: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-// TO-DO: Add mongoose schema validation
-
-class Invoice {
-  constructor(
-    _id,
-    clientName,
-    amount,
-    service,
-    paymentMethod,
-    invoiceDate,
-    isPaid = false
-  ) {
-    this._id = _id ? new mongodb.ObjectId(_id) : null;
-    this.clientName = clientName;
-    this.amount = amount;
-    this.service = service;
-    this.paymentMethod = paymentMethod;
-    this.invoiceDate = invoiceDate;
-    this.isPaid = isPaid;
-  }
-
-  create() {
-    return dbHelpers.createInvoice(this);
-  }
-
-  update() {
-    if (!this._id) {
-      throw new Error("Cannot update an invoice without an ID.");
-    }
-    return dbHelpers.updateInvoice(this._id.toString(), this);
-  }
-
-  static fetchAll() {
-    return dbHelpers.fetchAllInvoices();
-  }
-
-  static findById(invoiceId) {
-    return dbHelpers.findInvoiceById(invoiceId);
-  }
-
-  static deleteById(invoiceId) {
-    return dbHelpers.deleteInvoiceById(invoiceId);
-  }
-}
+const Invoice = mongoose.model("Invoice", invoiceSchema);
 
 module.exports = Invoice;
