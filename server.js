@@ -1,12 +1,13 @@
 require("dotenv").config();
 const app = require("./app");
-const { connectToDatabase } = require("./src/config/database");
+const connectDB = require("./src/config/database").connectToDatabase; // Native MongoDB
+// const connectDB = require("./config/database"); // Mongoose
 
 const PORT = process.env.PORT || 8000;
 
 (async function startServer() {
   try {
-    await connectToDatabase();
+    await connectDB();
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
