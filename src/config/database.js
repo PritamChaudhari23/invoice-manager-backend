@@ -4,7 +4,7 @@ const { MongoClient } = require("mongodb");
 let _db;
 let _client;
 
-const connectToDatabase = async () => {
+const connectDB = async () => {
   try {
     _client = await MongoClient.connect(process.env.CONNECTION_STRING);
     console.log("Connected to MongoDB");
@@ -32,7 +32,7 @@ const closeDb = async () => {
 };
 
 module.exports = {
-  connectToDatabase,
+  connectDB,
   getDb,
   closeDb,
 };
