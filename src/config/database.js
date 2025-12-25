@@ -1,28 +1,38 @@
 require("dotenv").config();
-const mongodb = require("mongodb");
-const MongoClient = mongodb.MongoClient;
+const { MongoClient } = require("mongodb");
 
 let _db;
+let _client;
 
-const connectToDatabase = async (callback) => {
+const connectToDatabase = async () => {
   try {
-    const client = await MongoClient.connect(process.env.CONNECTION_STRING);
-    console.log(client);
+    _client = await MongoClient.connect(process.env.CONNECTION_STRING);
     console.log("Connected to MongoDB");
-    _db = client.db();
-    callback();
+
+    _db = _client.db();
+    return _db;
   } catch (error) {
-    console.error("Failed to connect to MongoDB: ", error);
-    process.exit(1); // Exit the application if connection fails
+    console.error("Failed to connect to MongoDB:", error);
+    throw error;
   }
 };
 
 const getDb = () => {
-  if (_db) {
-    return _db;
+  if (!_db) {
+    throw new Error("No database found. Did you call connectToDatabase?");
   }
-  throw "No database found!";
+  return _db;
 };
 
-exports.connectToDatabase = connectToDatabase;
-exports.getDb = getDb;
+const closeDb = async () => {
+  if (_client) {
+    await _client.close();
+    console.log("MongoDB connection closed");
+  }
+};
+
+module.exports = {
+  connectToDatabase,
+  getDb,
+  closeDb,
+};
