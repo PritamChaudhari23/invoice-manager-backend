@@ -8,6 +8,14 @@ const {
   deleteInvoice,
 } = require("../controllers/invoiceControllers");
 
+// const {
+//   addInvoice,
+//   getAllInvoices,
+//   getInvoiceById,
+//   updateInvoice,
+//   deleteInvoice,
+// } = require("../controllers-mongoose/invoiceControllers");
+
 const router = express.Router();
 
 router.post("/addinvoice", authenticateToken, addInvoice); // CREATE

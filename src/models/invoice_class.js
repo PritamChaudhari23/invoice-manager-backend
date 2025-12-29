@@ -1,10 +1,5 @@
-// Original Invoice model using class-based approach with native MongoDB
-// For Mongoose version, see invoice-mongoose.js
-
 const mongodb = require("mongodb");
-const dbHelpers = require("../config/dbHelpers");
-
-// TO-DO: Add mongoose schema validation
+const dbHelpers = require("../repositories/invoiceRepository");
 
 class Invoice {
   constructor(

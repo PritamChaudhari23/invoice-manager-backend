@@ -1,6 +1,3 @@
-// Original invoice controllers using class-based model
-// For Mongoose version, see invoiceControllers-mongoose.js
-
 const Invoice = require("../models/invoice_class");
 
 // CREATE

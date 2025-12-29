@@ -1,6 +1,3 @@
-// Original user controllers using native MongoDB driver
-// For Mongoose version, see userControllers-mongoose.js
-
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
