@@ -1,5 +1,5 @@
 const mongodb = require("mongodb");
-const dbHelpers = require("../repositories/invoiceRepository");
+const invoiceRepository = require("../repositories/invoiceRepository");
 
 class Invoice {
   constructor(
@@ -21,26 +21,26 @@ class Invoice {
   }
 
   create() {
-    return dbHelpers.createInvoice(this);
+    return invoiceRepository.createInvoice(this);
   }
 
   update() {
     if (!this._id) {
       throw new Error("Cannot update an invoice without an ID.");
     }
-    return dbHelpers.updateInvoice(this._id.toString(), this);
+    return invoiceRepository.updateInvoice(this._id.toString(), this);
   }
 
   static fetchAll() {
-    return dbHelpers.fetchAllInvoices();
+    return invoiceRepository.fetchAllInvoices();
   }
 
   static findById(invoiceId) {
-    return dbHelpers.findInvoiceById(invoiceId);
+    return invoiceRepository.findInvoiceById(invoiceId);
   }
 
   static deleteById(invoiceId) {
-    return dbHelpers.deleteInvoiceById(invoiceId);
+    return invoiceRepository.deleteInvoiceById(invoiceId);
   }
 }
 
