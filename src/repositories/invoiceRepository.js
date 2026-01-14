@@ -18,10 +18,11 @@ const invoiceRepository = {
   },
 
   updateInvoice: (id, updatedInvoice) => {
+    const { _id, ...invoiceData } = updatedInvoice;
     const db = getDb();
     return db
       .collection("invoices")
-      .updateOne({ _id: new mongodb.ObjectId(id) }, { $set: updatedInvoice })
+      .updateOne({ _id: new mongodb.ObjectId(String(_id)) }, { $set: invoiceData })
       .then((result) => {
         console.log("Invoice updated: ", result);
         return result;

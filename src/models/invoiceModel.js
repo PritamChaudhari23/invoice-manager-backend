@@ -11,7 +11,7 @@ class Invoice {
     invoiceDate,
     isPaid = false
   ) {
-    this._id = _id ? new mongodb.ObjectId(_id) : null;
+    this._id = _id ? new mongodb.ObjectId(String(_id)) : null;
     this.clientName = clientName;
     this.amount = amount;
     this.service = service;
