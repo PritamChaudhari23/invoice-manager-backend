@@ -1,12 +1,12 @@
 const getDb = require("../config/database").getDb;
 
 const userRepository = {
-  findByUsername: async (username) => {
+  findByUsername(username) {
     const db = getDb();
     return db.collection("users").findOne({ username });
   },
 
-  createUser: async (user) => {
+  create(user) {
     const db = getDb();
     return db.collection("users").insertOne(user);
   },
