@@ -1,31 +1,38 @@
 const mongoose = require("mongoose");
 
-const invoiceSchema = new mongoose.Schema({
-  clientName: {
-    type: String,
-    required: true,
+const invoiceSchema = new mongoose.Schema(
+  {
+    clientName: {
+      type: String,
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    service: {
+      type: String,
+      required: true,
+    },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    invoiceDate: {
+      type: Date,
+      required: true,
+    },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
   },
-  amount: {
-    type: Number,
-    required: true,
-  },
-  service: {
-    type: String,
-    required: true,
-  },
-  paymentMethod: {
-    type: String,
-    required: true,
-  },
-  invoiceDate: {
-    type: Date,
-    required: true,
-  },
-  isPaid: {
-    type: Boolean,
-    default: false,
-  },
-}, { timestamps: true });
+  { timestamps: true },
+);
+
+invoiceSchema.methods.canBeDeleted = function () {
+  return !this.isPaid;
+};
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
 
