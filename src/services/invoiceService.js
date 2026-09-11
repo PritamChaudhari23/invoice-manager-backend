@@ -1,3 +1,5 @@
+// SERVICE AND CONTROLLER SHOULD BE SHARED AND SAME REGARDLESS OF DB TYPE OR DRIVER
+
 const mongoose = require("mongoose");
 const invoiceRepository = require("../repositories/invoiceRepository");
 const AppError = require("../utils/AppError");

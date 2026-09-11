@@ -1,4 +1,4 @@
-const Invoice = require("../models/invoice");
+const Invoice = require("../models/mongoose/invoice");
 
 class InvoiceRepository {
   async create(data) {
