@@ -1,5 +1,5 @@
 const mongodb = require("mongodb");
-const getDb = require("../config/database").getDb;
+const getDb = require("../../native-driver/config/database").getDb;
 
 const invoiceRepository = {
   create(invoice) {
@@ -17,18 +17,15 @@ const invoiceRepository = {
       throw new Error("Invalid ID");
     }
     const db = getDb();
-    return db
-      .collection("invoices")
-      .findOne({ _id: new mongodb.ObjectId(id) });
+    return db.collection("invoices").findOne({ _id: new mongodb.ObjectId(id) });
   },
 
   update(id, invoice) {
     const { id: _, ...data } = invoice;
     const db = getDb();
-    return db.collection("invoices").updateOne(
-      { _id: new mongodb.ObjectId(id) },
-      { $set: data }
-    );
+    return db
+      .collection("invoices")
+      .updateOne({ _id: new mongodb.ObjectId(id) }, { $set: data });
   },
 
   delete(id) {

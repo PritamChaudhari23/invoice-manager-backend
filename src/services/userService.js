@@ -1,7 +1,7 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
+const User = require("../../native-driver/models/userModel");
 const userRepository = require("../repositories/userRepository");
 
 class UserService {
@@ -19,7 +19,7 @@ class UserService {
     return jwt.sign(
       { id: user._id, username: user.username },
       process.env.TOKEN_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
   }
 

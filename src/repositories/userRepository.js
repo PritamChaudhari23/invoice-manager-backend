@@ -1,4 +1,4 @@
-const getDb = require("../config/database").getDb;
+const getDb = require("../../native-driver/config/database").getDb;
 
 const userRepository = {
   findByUsername(username) {
