@@ -1,15 +1,19 @@
-const getDb = require("../../native-driver/config/database").getDb;
+const User = require("../models/user");
 
-const userRepository = {
+class UserRepository {
   findByUsername(username) {
-    const db = getDb();
-    return db.collection("users").findOne({ username });
-  },
+    return User.findOne({ username });
+  }
 
-  create(user) {
-    const db = getDb();
-    return db.collection("users").insertOne(user);
-  },
-};
+  findByEmailOrUsername(email, username) {
+    return User.findOne({
+      $or: [{ email }, { username }],
+    });
+  }
 
-module.exports = userRepository;
+  create(userData) {
+    return User.create(userData);
+  }
+}
+
+module.exports = new UserRepository();

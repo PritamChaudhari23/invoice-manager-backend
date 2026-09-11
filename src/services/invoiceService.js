@@ -1,47 +1,55 @@
-const Invoice = require("../models/invoiceModel");
+const mongoose = require("mongoose");
 const invoiceRepository = require("../repositories/invoiceRepository");
+const AppError = require("../utils/AppError");
+
+function assertValidId(id) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new AppError("Invalid invoice ID", 400);
+  }
+}
 
 class InvoiceService {
-  async addInvoice(data) {
-    const invoice = new Invoice(data);
-    return invoiceRepository.create(invoice);
+  addInvoice(data) {
+    return invoiceRepository.create(data);
   }
 
-  async getAllInvoices() {
-    return invoiceRepository.findAll();
+  getAllInvoices(filter = {}) {
+    return invoiceRepository.findAll(filter);
   }
 
   async getInvoiceById(id) {
+    assertValidId(id);
+
     const invoice = await invoiceRepository.findById(id);
-    if (!invoice) {
-      throw new Error("Invoice not found");
-    }
+    if (!invoice) throw new AppError("Invoice not found", 404);
+
     return invoice;
   }
 
   async updateInvoice(id, data) {
-    const existing = await invoiceRepository.findById(id);
-    if (!existing) {
-      throw new Error("Invoice not found");
+    assertValidId(id);
+
+    if (!data || Object.keys(data).length === 0) {
+      throw new AppError("No update data provided", 400);
     }
 
-    const invoice = new Invoice({ id, ...data });
-    return invoiceRepository.update(id, invoice);
+    const updated = await invoiceRepository.updateById(id, data);
+    if (!updated) throw new AppError("Invoice not found", 404);
+
+    return updated;
   }
 
   async deleteInvoice(id) {
-    const existing = await invoiceRepository.findById(id);
-    if (!existing) {
-      throw new Error("Invoice not found");
-    }
+    assertValidId(id);
 
-    const invoice = new Invoice({ ...existing, id });
+    const invoice = await invoiceRepository.findById(id);
+    if (!invoice) throw new AppError("Invoice not found", 404);
 
     if (!invoice.canBeDeleted()) {
-      throw new Error("Paid invoices cannot be deleted");
+      throw new AppError("Paid invoices cannot be deleted", 409);
     }
 
-    return invoiceRepository.delete(id);
+    return invoiceRepository.deleteById(id);
   }
 }
 

@@ -1,39 +1,28 @@
-const mongodb = require("mongodb");
-const getDb = require("../../native-driver/config/database").getDb;
+const Invoice = require("../models/invoice");
 
-const invoiceRepository = {
-  create(invoice) {
-    const db = getDb();
-    return db.collection("invoices").insertOne(invoice);
-  },
+class InvoiceRepository {
+  async create(data) {
+    return Invoice.create(data);
+  }
 
-  findAll() {
-    const db = getDb();
-    return db.collection("invoices").find().toArray();
-  },
+  async findAll(filter = {}) {
+    return Invoice.find(filter);
+  }
 
-  findById(id) {
-    if (!mongodb.ObjectId.isValid(id)) {
-      throw new Error("Invalid ID");
-    }
-    const db = getDb();
-    return db.collection("invoices").findOne({ _id: new mongodb.ObjectId(id) });
-  },
+  async findById(id) {
+    return Invoice.findById(id);
+  }
 
-  update(id, invoice) {
-    const { id: _, ...data } = invoice;
-    const db = getDb();
-    return db
-      .collection("invoices")
-      .updateOne({ _id: new mongodb.ObjectId(id) }, { $set: data });
-  },
+  async updateById(id, data) {
+    return Invoice.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    });
+  }
 
-  delete(id) {
-    const db = getDb();
-    return db
-      .collection("invoices")
-      .deleteOne({ _id: new mongodb.ObjectId(id) });
-  },
-};
+  async deleteById(id) {
+    return Invoice.findByIdAndDelete(id);
+  }
+}
 
-module.exports = invoiceRepository;
+module.exports = new InvoiceRepository();

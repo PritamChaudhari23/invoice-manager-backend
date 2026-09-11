@@ -2,10 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
+const errorHandler = require("./src/middlewares/errorHandler");
 const invoiceRoutes = require("./src/routes/invoiceRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 
 const app = express();
+
+app.use("/api/v1/invoice", invoiceRoutes);
+app.use("/api/v1/user", userRoutes);
+
+app.use(errorHandler);
 
 app.use(
   cors({
