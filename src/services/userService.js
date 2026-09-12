@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const userRepository = require("../repositories/mongoose/userRepository");
+const { userRepository } = require("../repositories/index");
 const AppError = require("../utils/AppError");
 
 const SALT_ROUNDS = 10;
@@ -13,7 +13,6 @@ class UserService {
     }
 
     const user = await userRepository.findByUsername(username);
-    // Same message for unknown user and bad password so the response doesn't reveal which accounts exist.
     if (!user) throw new AppError("Invalid credentials", 401);
 
     const match = await bcrypt.compare(password, user.password);

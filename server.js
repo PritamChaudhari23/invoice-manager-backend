@@ -1,6 +1,11 @@
 require("dotenv").config();
 const app = require("./app");
-const connectDB = require("./src/config/database_mongoose");
+
+const driver = process.env.DB_DRIVER || "mongoose";
+const connectDB =
+  driver === "native"
+    ? require("./src/config/database_native_driver").connectDB
+    : require("./src/config/database_mongoose");
 
 const PORT = process.env.PORT || 8000;
 

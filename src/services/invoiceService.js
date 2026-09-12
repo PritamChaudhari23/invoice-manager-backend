@@ -1,4 +1,4 @@
-const invoiceRepository = require("../repositories/mongoose/invoiceRepository");
+const { invoiceRepository } = require("../repositories/index");
 const AppError = require("../utils/AppError");
 
 class InvoiceService {

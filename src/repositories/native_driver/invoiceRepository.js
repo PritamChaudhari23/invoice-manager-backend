@@ -1,5 +1,12 @@
 const mongodb = require("mongodb");
 const { getDb } = require("../../config/database_native_driver");
+const AppError = require("../../utils/AppError");
+
+function assertValidId(id) {
+  if (!mongodb.ObjectId.isValid(id)) {
+    throw new AppError("Invalid invoice ID", 400);
+  }
+}
 
 const invoiceRepository = {
   create(invoice) {
@@ -13,14 +20,13 @@ const invoiceRepository = {
   },
 
   findById(id) {
-    if (!mongodb.ObjectId.isValid(id)) {
-      throw new Error("Invalid ID");
-    }
+    assertValidId(id);
     const db = getDb();
     return db.collection("invoices").findOne({ _id: new mongodb.ObjectId(id) });
   },
 
-  update(id, invoice) {
+  updateById(id, invoice) {
+    assertValidId(id);
     const { id: _, ...data } = invoice;
     const db = getDb();
     return db
@@ -28,7 +34,8 @@ const invoiceRepository = {
       .updateOne({ _id: new mongodb.ObjectId(id) }, { $set: data });
   },
 
-  delete(id) {
+  deleteById(id) {
+    assertValidId(id);
     const db = getDb();
     return db
       .collection("invoices")
