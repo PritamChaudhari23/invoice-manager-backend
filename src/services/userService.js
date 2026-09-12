@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const userRepository = require("../repositories/userRepository");
+const userRepository = require("../repositories/mongoose/userRepository");
 const AppError = require("../utils/AppError");
 
 const SALT_ROUNDS = 10;
