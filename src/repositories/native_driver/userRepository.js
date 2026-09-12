@@ -13,9 +13,10 @@ const userRepository = {
     });
   },
 
-  create(user) {
+  async create(user) {
     const db = getDb();
-    return db.collection("users").insertOne(user);
+    const result = await db.collection("users").insertOne(user);
+    return { _id: result.insertedId, ...user };
   },
 };
 

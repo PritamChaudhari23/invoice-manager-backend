@@ -30,10 +30,6 @@ const invoiceSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-invoiceSchema.methods.canBeDeleted = function () {
-  return !this.isPaid;
-};
-
 const Invoice = mongoose.model("Invoice", invoiceSchema);
 
 module.exports = Invoice;

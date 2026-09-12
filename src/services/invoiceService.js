@@ -1,6 +1,10 @@
 const { invoiceRepository } = require("../repositories/index");
 const AppError = require("../utils/AppError");
 
+function canBeDeleted(invoice) {
+  return !invoice.isPaid;
+}
+
 class InvoiceService {
   addInvoice(data) {
     return invoiceRepository.create(data);
@@ -28,7 +32,7 @@ class InvoiceService {
   async deleteInvoice(id) {
     const invoice = await invoiceRepository.findById(id);
     if (!invoice) throw new AppError("Invoice not found", 404);
-    if (!invoice.canBeDeleted()) {
+    if (!canBeDeleted(invoice)) {
       throw new AppError("Paid invoices cannot be deleted", 409);
     }
     return invoiceRepository.deleteById(id);

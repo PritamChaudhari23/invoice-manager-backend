@@ -9,9 +9,10 @@ function assertValidId(id) {
 }
 
 const invoiceRepository = {
-  create(invoice) {
+  async create(invoice) {
     const db = getDb();
-    return db.collection("invoices").insertOne(invoice);
+    const result = await db.collection("invoices").insertOne(invoice);
+    return { _id: result.insertedId, ...invoice };
   },
 
   findAll() {
@@ -31,7 +32,11 @@ const invoiceRepository = {
     const db = getDb();
     return db
       .collection("invoices")
-      .updateOne({ _id: new mongodb.ObjectId(id) }, { $set: data });
+      .findOneAndUpdate(
+        { _id: new mongodb.ObjectId(id) },
+        { $set: data },
+        { returnDocument: "after" },
+      );
   },
 
   deleteById(id) {
