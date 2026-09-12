@@ -1,5 +1,5 @@
 const mongodb = require("mongodb");
-const getDb = require("../config/database").getDb;
+const { getDb } = require("../../config/database_native_driver");
 
 const invoiceRepository = {
   create(invoice) {
